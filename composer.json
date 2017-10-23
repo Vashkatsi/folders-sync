@@ -1,20 +1,24 @@
 {
-    "name": "outlandish/sync",
-	"description":"Sync directory contents over HTTP using PHP",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Tamlyn Rhodes",
-            "email": "tamlyn@tamlyn.org"
-        }
-    ],
-    "require": {
-		"php":">=7.1",
-	    "ext-curl":"*"
+  "name": "vashkatsi/sync",
+  "description": "Sync directory contents over HTTP using PHP",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tamlyn Rhodes",
+      "email": "tamlyn@tamlyn.org"
     },
-	"autoload":{
-		"psr-0":{
-			"Outlandish":"src/"
-		}
-	}
+    {
+      "name": "Archil Abuladze",
+      "email": "armiworker@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Outlandish": "src/"
+    }
+  }
 }
