@@ -1,6 +1,6 @@
 # Sync directory contents over HTTP using PHP
 
-PHP 7.1
+PHP 7.1 code refactored
 
 Use these classes to recursively sync the contents of two folders on different servers. The source must have
 a web server although the directory being synced does not have to be web accessible. The client initiates the
