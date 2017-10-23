@@ -6,83 +6,89 @@ namespace Outlandish\Sync;
  * Sync client
  * @package Outlandish\Sync
  */
-class Client extends AbstractSync {
+class Client extends AbstractSync
+{
 
-	/**
-	 * @var resource cURL handle
-	 */
-	public $curl;
+    /**
+     * @var resource cURL handle
+     */
+    public $curl;
 
-	/**
-	 * Initiates the sync by exchanging file lists
-	 * @param $url string URL to remote sync server script
-	 */
-	public function run($url) {
+    /**
+     * Initiates the sync by exchanging file lists
+     * @param $url string URL to remote sync server script
+     */
+    public function run($url)
+    {
 
-		$this->curl = curl_init($url);
+        $this->curl = curl_init($url);
 
-		//send client file list to server
-		$localFiles = $this->getFileList($this->path);
-		$request = array(
-			'action' => self::ACTION_FILELIST,
-			'data' => $localFiles
-		);
-		$response = $this->post($request);
+        //send client file list to server
+        $localFiles = $this->getFileList($this->path);
+        $request = [
+            'action' => self::ACTION_FILELIST,
+            'data'   => $localFiles
+        ];
+        $response = $this->post($request);
 
-		if (isset($response['error'])) {
-			echo $response['error'];
-			return;
-		}
+        if(isset($response['error'])) {
+            echo $response['error'];
 
-		//process modified files
-		foreach ($response['data'] as $relativePath => $info) {
-			//fetch file contents
-			$response = $this->post(array(
-				'action' => self::ACTION_FETCH,
-				'file' => $relativePath
-			));
+            return;
+        }
 
-			//save file
-			$absolutePath = $this->path . $relativePath;
-			if (!file_exists(dirname($absolutePath))) {
-				mkdir(dirname($absolutePath), 0777, true);
-			}
-			file_put_contents($absolutePath, $response);
+        //process modified files
+        foreach ($response['data'] as $relativePath => $info) {
+            //fetch file contents
+            $response = $this->post(
+                [
+                    'action' => self::ACTION_FETCH,
+                    'file'   => $relativePath
+                ]
+            );
 
-			//update modified time to match server
-			touch($absolutePath, $info['timestamp']);
+            //save file
+            $absolutePath = $this->path . $relativePath;
+            if(!file_exists(dirname($absolutePath))) {
+                mkdir(dirname($absolutePath), 0777, true);
+            }
+            file_put_contents($absolutePath, $response);
 
-			//update permissions to match server
-			chmod($absolutePath, octdec(intval($info['fileperm'])));
-		}
-	}
+            //update modified time to match server
+            touch($absolutePath, $info['timestamp']);
 
-	/**
-	 * @param $data array
-	 * @return mixed
-	 * @throws \RuntimeException
-	 */
-	protected function post($data) {
+            //update permissions to match server
+            chmod($absolutePath, octdec(intval($info['fileperm'])));
+        }
+    }
 
-		$data['key'] = $this->key;
+    /**
+     * @param $data array
+     * @return mixed
+     * @throws \RuntimeException
+     */
+    protected function post($data)
+    {
 
-		curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($this->curl, CURLOPT_HEADER, 1);
-		curl_setopt($this->curl, CURLOPT_POST, 1);
-		curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
-		curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        $data['key'] = $this->key;
 
-		list($headers, $body) = explode("\r\n\r\n", curl_exec($this->curl), 2);
-		$code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
-		if ($code != 200) {
-			throw new \RuntimeException('HTTP error: '.$code);
-		}
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($this->curl, CURLOPT_HEADER, 1);
+        curl_setopt($this->curl, CURLOPT_POST, 1);
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 
-		if (stripos($headers, 'Content-type: application/json') !== false) {
-			$body = json_decode($body, 1);
-		}
+        list($headers, $body) = explode("\r\n\r\n", curl_exec($this->curl), 2);
+        $code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        if($code != 200) {
+            throw new \RuntimeException('HTTP error: ' . $code);
+        }
 
-		return $body;
-	}
+        if(stripos($headers, 'Content-type: application/json') !== false) {
+            $body = json_decode($body, 1);
+        }
+
+        return $body;
+    }
 
 }
