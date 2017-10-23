@@ -9,7 +9,7 @@ connection and can be either another web server or a command line script.
 
 ## Install
 
-If using Composer, add `"vashkatsi/sync":"1.*@dev"` to your requirements.
+If using Composer, add `"vashkatsi/folders-sync":"1.*@dev"` to your requirements.
 
 Otherwise, just download and `require` the classes as normal.
 
