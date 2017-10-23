@@ -1,5 +1,5 @@
 {
-  "name": "vashkatsi/sync",
+  "name": "vashkatsi/folders-sync",
   "description": "Sync directory contents over HTTP using PHP",
   "license": "MIT",
   "authors": [
