@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Outlandish\Sync;
+namespace Vashkatsi\Sync;
 
 /**
  * Base class for Client and Server
- * @package Outlandish\Sync
+ * @package Vashkatsi\Sync
  */
 abstract class AbstractSync
 {

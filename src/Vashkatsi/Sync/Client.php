@@ -1,10 +1,10 @@
 <?php
 
-namespace Outlandish\Sync;
+namespace Vashkatsi\Sync;
 
 /**
  * Sync client
- * @package Outlandish\Sync
+ * @package Vashkatsi\Sync
  */
 class Client extends AbstractSync
 {

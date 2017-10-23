@@ -36,7 +36,7 @@ require_once 'vendor/autoload.php'; //or include AbstractSync.php and Server.php
 const SECRET = '5ecR3t'; //make this long and complicated
 const PATH = '/path/to/source'; //sync all files and folders below this path
 
-$server = new \Outlandish\Sync\Server(SECRET, PATH);
+$server = new \Vashkatsi\Sync\Server(SECRET, PATH);
 $server->run(); //process the request
 ```
 
@@ -48,7 +48,7 @@ require_once 'vendor/autoload.php';
 const SECRET = '5ecR3t'; //this must match the secret key on the server
 const PATH = '/path/to/destination'; //target for files synced from server
 
-$client = new \Outlandish\Sync\Client(SECRET, PATH);
+$client = new \Vashkatsi\Sync\Client(SECRET, PATH);
 $client->run('http://example.com/remote.php'); //connect to server and start sync
 ```
 
